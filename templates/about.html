@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}About - Challenger 650 Weight and Balance{% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">About</h1>
+        
+        <div class="prose max-w-none">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Challenger 650 Weight and Balance Calculator</h2>
+            
+            <p class="mb-4 text-gray-600">
+                This web application provides weight and balance calculations for the Bombardier Challenger 650 aircraft. 
+                It allows pilots and flight planners to input crew weights, passenger counts, baggage, and fuel loads 
+                to determine the aircraft's takeoff weight (TOW) and center of gravity position as a percentage of 
+                Mean Aerodynamic Chord (%MAC).
+            </p>
+            
+            <h3 class="text-xl font-semibold mt-6 mb-3 text-gray-700">Features</h3>
+            <ul class="list-disc list-inside mb-4 text-gray-600 space-y-2">
+                <li>Calculate Operating Empty Weight (OEW), Zero Fuel Weight (ZFW), and Takeoff Weight (TOW)</li>
+                <li>Determine Center of Gravity (CG) position and %MAC</li>
+                <li>Visual weight and balance chart with operational envelope</li>
+                <li>Support for both Imperial (lbs) and Metric (kg) units</li>
+                <li>Automatic collision detection for chart labels</li>
+            </ul>
+            
+            <h3 class="text-xl font-semibold mt-6 mb-3 text-gray-700">Technical Details</h3>
+            <p class="mb-4 text-gray-600">
+                The application uses standard weight and balance calculations based on aircraft-specific stations 
+                and reference data. All calculations are performed server-side to ensure accuracy and consistency.
+            </p>
+            <p class="mb-4 text-gray-600">
+                For detailed information, refer to the 
+                <a href="{{ url_for('serve_asset', filename='Challenger 650 Weight and Balance Manual.pdf') }}" 
+                   target="_blank" 
+                   class="text-blue-600 hover:underline font-medium">
+                    Challenger 650 Weight and Balance Manual
+                </a> (PDF).
+            </p>
+            
+            <h3 class="text-xl font-semibold mt-6 mb-3 text-gray-700">License</h3>
+            <p class="mb-4 text-gray-600">
+                This software is licensed under a custom MIT License with Non-Commercial Use Restriction. 
+                See the <a href="/LICENSE" class="text-blue-600 hover:underline">LICENSE</a> file for details.
+            </p>
+            
+            <h3 class="text-xl font-semibold mt-6 mb-3 text-gray-700">Copyright</h3>
+            <p class="mb-4 text-gray-600">
+                Copyright (c) 2025 Alan Duncan
+            </p>
+            
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <p class="text-sm text-gray-500">
+                    <strong>Disclaimer:</strong> This tool is provided for informational purposes only. 
+                    Always verify weight and balance calculations using official aircraft documentation 
+                    and approved methods before flight operations. Use only for flight simulation purposes. 
+                    Do NOT use for real flight operations.
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

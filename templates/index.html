@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}Challenger 650 Weight and Balance Calculator{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">
+        Challenger 650 Weight and Balance
+    </h1>
+    
+    <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Form Section -->
+        <div class="lg:w-1/2 bg-white rounded-lg shadow-lg p-6">
+            <form method="POST" action="/" class="space-y-6">
+                <!-- Unit Preference Selection -->
+                <div class="p-4 bg-gray-50 rounded-lg">
+                    <label class="text-lg font-semibold text-gray-700 block mb-3">Unit System:</label>
+                    <div class="flex gap-6">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="unit_preference" value="imperial" 
+                                   {% if unit_preference == 'imperial' %}checked{% endif %}
+                                   class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 unit-radio"
+                                   onchange="this.form.submit()">
+                            <span class="ml-2 text-gray-700 font-medium">Imperial (lbs)</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="unit_preference" value="metric" 
+                                   {% if unit_preference == 'metric' %}checked{% endif %}
+                                   class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 unit-radio"
+                                   onchange="this.form.submit()">
+                            <span class="ml-2 text-gray-700 font-medium">Metric (kg)</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Crew Section -->
+                <div class="border-b pb-4">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">Flight Crew</h2>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-4">
+                            <label class="w-24 text-gray-700">Pilot:</label>
+                            <input type="number" 
+                                   name="pilot_weight" 
+                                   step="{% if unit_preference == 'imperial' %}1{% else %}0.5{% endif %}" 
+                                   min="0"
+                                   value="{% if form_data and form_data.pilot_weight %}{% if unit_preference == 'imperial' %}{{ form_data.pilot_weight|round|int }}{% else %}{{ (form_data.pilot_weight * 2)|round / 2 }}{% endif %}{% elif unit_preference == 'imperial' %}170{% else %}77.1{% endif %}"
+                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <span class="text-gray-600">
+                                {% if unit_preference == 'imperial' %}lbs{% else %}kg{% endif %}
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <label class="w-24 text-gray-700">Copilot:</label>
+                            <input type="number" 
+                                   name="copilot_weight" 
+                                   step="{% if unit_preference == 'imperial' %}1{% else %}0.5{% endif %}" 
+                                   min="0"
+                                   value="{% if form_data and form_data.copilot_weight %}{% if unit_preference == 'imperial' %}{{ form_data.copilot_weight|round|int }}{% else %}{{ (form_data.copilot_weight * 2)|round / 2 }}{% endif %}{% elif unit_preference == 'imperial' %}170{% else %}77.1{% endif %}"
+                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <span class="text-gray-600">
+                                {% if unit_preference == 'imperial' %}lbs{% else %}kg{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Crew Baggage Section -->
+                <div class="border-b pb-4">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">Crew Baggage</h2>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-4">
+                            <label class="w-24 text-gray-700">Pilot Baggage:</label>
+                            <input type="number" 
+                                   name="pilot_baggage" 
+                                   step="{% if unit_preference == 'imperial' %}1{% else %}0.5{% endif %}" 
+                                   min="0"
+                                   value="{% if form_data and form_data.pilot_baggage %}{% if unit_preference == 'imperial' %}{{ form_data.pilot_baggage|round|int }}{% else %}{{ (form_data.pilot_baggage * 2)|round / 2 }}{% endif %}{% else %}0{% endif %}"
+                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <span class="text-gray-600">
+                                {% if unit_preference == 'imperial' %}lbs{% else %}kg{% endif %}
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <label class="w-24 text-gray-700">Copilot Baggage:</label>
+                            <input type="number" 
+                                   name="copilot_baggage" 
+                                   step="{% if unit_preference == 'imperial' %}1{% else %}0.5{% endif %}" 
+                                   min="0"
+                                   value="{% if form_data and form_data.copilot_baggage %}{% if unit_preference == 'imperial' %}{{ form_data.copilot_baggage|round|int }}{% else %}{{ (form_data.copilot_baggage * 2)|round / 2 }}{% endif %}{% else %}0{% endif %}"
+                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <span class="text-gray-600">
+                                {% if unit_preference == 'imperial' %}lbs{% else %}kg{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Passengers Section -->
+                <div class="border-b pb-4">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">Passengers (max 12 total)</h2>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-4">
+                            <label class="w-24 text-gray-700">Adults:</label>
+                            <input type="number" 
+                                   name="adults" 
+                                   min="0" 
+                                   max="12"
+                                   value="{{ form_data.adults if form_data else 0 }}"
+                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <span class="text-gray-600">({% if unit_preference == 'imperial' %}190 lbs{% else %}86.2 kg{% endif %} each)</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <label class="w-24 text-gray-700">Children:</label>
+                            <input type="number" 
+                                   name="children" 
+                                   min="0" 
+                                   max="12"
+                                   value="{{ form_data.children if form_data else 0 }}"
+                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <span class="text-gray-600">({% if unit_preference == 'imperial' %}87 lbs{% else %}39.5 kg{% endif %} each)</span>
+                        </div>
+                        {% if form_data %}
+                        <div class="text-sm text-gray-600 mt-2">
+                            Total Passengers: {{ (form_data.adults|int) + (form_data.children|int) }} / 12
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Baggage Section -->
+                <div class="border-b pb-4">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">Baggage</h2>
+                    <div class="flex items-center gap-4">
+                        <label class="w-24 text-gray-700">Weight:</label>
+                        <input type="number" 
+                               name="baggage" 
+                               step="{% if unit_preference == 'imperial' %}1{% else %}0.5{% endif %}" 
+                               min="0"
+                               value="{% if form_data and form_data.baggage %}{% if unit_preference == 'imperial' %}{{ form_data.baggage|round|int }}{% else %}{{ (form_data.baggage * 2)|round / 2 }}{% endif %}{% else %}0{% endif %}"
+                               class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <span class="text-gray-600">
+                            {% if unit_preference == 'imperial' %}lbs{% else %}kg{% endif %}
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Fuel Section -->
+                <div class="border-b pb-4">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">Fuel</h2>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-4">
+                            <label class="w-24 text-gray-700">Right Main:</label>
+                            <input type="number" 
+                                   name="fuel_right_main" 
+                                   step="{% if unit_preference == 'imperial' %}1{% else %}0.5{% endif %}" 
+                                   min="0"
+                                   value="{% if form_data and form_data.fuel_right_main %}{% if unit_preference == 'imperial' %}{{ form_data.fuel_right_main|round|int }}{% else %}{{ (form_data.fuel_right_main * 2)|round / 2 }}{% endif %}{% else %}0{% endif %}"
+                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <span class="text-gray-600">
+                                {% if unit_preference == 'imperial' %}lbs{% else %}kg{% endif %}
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <label class="w-24 text-gray-700">Left Main:</label>
+                            <input type="number" 
+                                   name="fuel_left_main" 
+                                   step="{% if unit_preference == 'imperial' %}1{% else %}0.5{% endif %}" 
+                                   min="0"
+                                   value="{% if form_data and form_data.fuel_left_main %}{% if unit_preference == 'imperial' %}{{ form_data.fuel_left_main|round|int }}{% else %}{{ (form_data.fuel_left_main * 2)|round / 2 }}{% endif %}{% else %}0{% endif %}"
+                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <span class="text-gray-600">
+                                {% if unit_preference == 'imperial' %}lbs{% else %}kg{% endif %}
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <label class="w-24 text-gray-700">Tail:</label>
+                            <input type="number" 
+                                   name="fuel_tail" 
+                                   step="{% if unit_preference == 'imperial' %}1{% else %}0.5{% endif %}" 
+                                   min="0"
+                                   value="{% if form_data and form_data.fuel_tail %}{% if unit_preference == 'imperial' %}{{ form_data.fuel_tail|round|int }}{% else %}{{ (form_data.fuel_tail * 2)|round / 2 }}{% endif %}{% else %}0{% endif %}"
+                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <span class="text-gray-600">
+                                {% if unit_preference == 'imperial' %}lbs{% else %}kg{% endif %}
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <label class="w-24 text-gray-700">Aux:</label>
+                            <input type="number" 
+                                   name="fuel_aux" 
+                                   step="{% if unit_preference == 'imperial' %}1{% else %}0.5{% endif %}" 
+                                   min="0"
+                                   value="{% if form_data and form_data.fuel_aux %}{% if unit_preference == 'imperial' %}{{ form_data.fuel_aux|round|int }}{% else %}{{ (form_data.fuel_aux * 2)|round / 2 }}{% endif %}{% else %}0{% endif %}"
+                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <span class="text-gray-600">
+                                {% if unit_preference == 'imperial' %}lbs{% else %}kg{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" 
+                        class="w-full px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold text-lg">
+                    Calculate Weight and Balance
+                </button>
+            </form>
+        </div>
+        
+        <!-- Chart Section -->
+        <div class="lg:w-1/2 bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Weight and Balance Chart</h2>
+            
+            <!-- Calculation Results -->
+            {% if calculation_results and calculation_results.tow %}
+            <div class="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <h3 class="text-lg font-semibold mb-2 text-blue-800">Calculation Results</h3>
+                <div class="grid grid-cols-2 gap-3 text-sm">
+                    <div>
+                        <span class="font-semibold text-gray-700">OEW:</span>
+                        <span class="ml-2">{{ "%.0f"|format(calculation_results.oew) }} lbs</span>
+                    </div>
+                    <div>
+                        <span class="font-semibold text-gray-700">ZFW:</span>
+                        <span class="ml-2">{{ "%.0f"|format(calculation_results.zfw) }} lbs</span>
+                    </div>
+                    <div>
+                        <span class="font-semibold text-gray-700">TOW:</span>
+                        <span class="ml-2 font-bold text-blue-600 text-base">{{ "%.0f"|format(calculation_results.tow) }} lbs</span>
+                    </div>
+                    <div>
+                        <span class="font-semibold text-gray-700">CG Xarm:</span>
+                        <span class="ml-2">{{ "%.2f"|format(calculation_results.cg_xarm) }} in</span>
+                    </div>
+                    <div class="col-span-2 pt-2 border-t border-blue-300">
+                        <span class="font-semibold text-gray-700">%MAC:</span>
+                        <span class="ml-2 font-bold text-green-600 text-xl">{{ "%.1f"|format(calculation_results.percent_mac) }}%</span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="flex justify-center items-center bg-gray-50 rounded-lg p-4">
+                <img src="{{ url_for('serve_chart', filename=chart_filename) }}" 
+                     alt="Weight and Balance Chart" 
+                     class="max-w-full h-auto">
+            </div>
+        </div>
+    </div>
+{% endblock %}
