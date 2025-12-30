@@ -1,2 +1,8 @@
 __pycache__/
 planning/
+
+# Ignore generated chart images
+static/charts/*.png
+static/charts/*.jpg
+static/charts/*.jpeg
+static/charts/*.gif
